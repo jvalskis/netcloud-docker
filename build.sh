@@ -30,15 +30,16 @@ if [[ -z "$TAG" ]]; then
     exit 1
 fi
 
-echo "Building ${REPO:+$REPO:}$TAG"
+FULL_TAG=${REPO:+$REPO:}$TAG
+echo "Building $FULL_TAG"
 
-docker build --build-arg TAG=$TAG -t $REPO:$TAG .
+docker build --build-arg TAG=$TAG -t $FULL_TAG .
   
 if [[ ! -z "$REPO" ]]; then
-    read -r -p "Push $REPO:$TAG? [y/n] " input
+    read -r -p "Push $FULL_TAG? [y/n] " input
     case $input in
         [yY][eE][sS]|[yY])
-            docker push $REPO:$TAG
+            docker push $FULL_TAG
             ;;
         *)
             exit 0
